@@ -2,7 +2,17 @@
 !*/
 cpp/
 
+# dont ignore CI
+!*.yml
+
+# dont ignore source
 !*.cpp
+
+# dont ignore buildscripts
 !*.command
+!*.ps1
+!*.sh
+
+# dont ignore important text
 !README.md
 !LICENSE.txt

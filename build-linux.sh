@@ -1,0 +1,1 @@
+c++ -std=c++11 -Wall -o hello cpp/api.cpp hello.cpp -I include -I cpp/include lib/libldclientapi.a -lcurl -lpthread -lm

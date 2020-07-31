@@ -1,0 +1,1 @@
+cl /I include /I cpp/include /Fe: hello.exe hello.cpp cpp/api.cpp /link lib/ldclientapi.lib

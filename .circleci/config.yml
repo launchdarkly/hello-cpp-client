@@ -10,6 +10,17 @@ workflows:
       - build-test-linux
       - build-test-osx
       - build-test-windows
+  test-daily:
+    triggers:
+    - schedule:
+        cron: "0 6 * * *"
+        filters:
+          branches:
+            only: master
+    jobs:
+      - build-test-linux
+      - build-test-osx
+      - build-test-windows
 
 jobs:
   build-test-linux:
@@ -32,7 +43,7 @@ jobs:
 
   build-test-osx:
     macos:
-      xcode: "9.0"
+      xcode: "10.3.0"
     steps:
       - checkout
       - run:

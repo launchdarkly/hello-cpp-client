@@ -9,5 +9,5 @@ Expand-Archive -Path windows-vs-64bit-dynamic.zip -DestinationPath .
 cp lib/ldclientapi.dll .
 
 New-Item -ItemType directory -Path "cpp/include/launchdarkly"
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/launchdarkly/c-client-sdk/master/cpp/api.cpp" -Outfile "cpp/api.cpp"
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/launchdarkly/c-client-sdk/master/cpp/include/launchdarkly/api.hpp" -Outfile "cpp/include/launchdarkly/api.hpp"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/launchdarkly/c-client-sdk/main/cpp/api.cpp" -Outfile "cpp/api.cpp"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/launchdarkly/c-client-sdk/main/cpp/include/launchdarkly/api.hpp" -Outfile "cpp/include/launchdarkly/api.hpp"

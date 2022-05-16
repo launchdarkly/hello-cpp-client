@@ -9,5 +9,5 @@ unzip osx-clang-64bit-static.zip
 
 # the release only includes C related stuff, so grab the C++ stuff from github raw content
 mkdir -p cpp/include/launchdarkly
-curl -Ls https://raw.githubusercontent.com/launchdarkly/c-client-sdk/master/cpp/api.cpp > cpp/api.cpp
-curl -Ls https://raw.githubusercontent.com/launchdarkly/c-client-sdk/master/cpp/include/launchdarkly/api.hpp > cpp/include/launchdarkly/api.hpp
+curl -Ls https://raw.githubusercontent.com/launchdarkly/c-client-sdk/main/cpp/api.cpp > cpp/api.cpp
+curl -Ls https://raw.githubusercontent.com/launchdarkly/c-client-sdk/main/cpp/include/launchdarkly/api.hpp > cpp/include/launchdarkly/api.hpp

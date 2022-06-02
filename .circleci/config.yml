@@ -34,6 +34,12 @@ jobs:
       - run:
           name: Fetch SDK
           command: ./fetch-linux.sh
+      - &step_inject_sdk_and_flag_key
+        run:
+          name: Insert mobile and flag key into demo code
+          command: |
+            sed -i.bak "s/#define MOBILE_KEY *\".*\"/#define MOBILE_KEY \"${LD_HELLO_WORLD_MOBILE_KEY}\"/" hello.cpp
+            sed -i.bak "s/#define FEATURE_KEY *\".*\"/#define FEATURE_KEY \"${LD_HELLO_WORLD_FLAG_KEY_WITH_TRUE_VALUE}\"/" hello.cpp
       - run:
           name: Build Hello
           command: ./build-linux.sh
@@ -49,6 +55,7 @@ jobs:
       - run:
           name: Fetch SDK
           command: ./fetch-mac.command
+      - *step_inject_sdk_and_flag_key
       - run:
           name: Build Hello
           command: ./build-mac.command
@@ -65,6 +72,13 @@ jobs:
       - run:
           name: Fetch SDK
           command: .\fetch-windows.ps1
+      - run:
+          name: Insert mobile and flag key into demo code
+          command: |
+            (get-content -path hello.cpp) `
+              -replace "#define MOBILE_KEY `"`"","#define MOBILE_KEY `"${env:LD_HELLO_WORLD_MOBILE_KEY}`"" `
+              -replace "#define FEATURE_KEY `"YOUR_FEATURE_KEY`"","#define FEATURE_KEY `"${env:LD_HELLO_WORLD_FLAG_KEY_WITH_TRUE_VALUE}`"" `
+              | set-content -path hello.c
       - run:
           name: Build Hello
           command: |

@@ -47,9 +47,12 @@ jobs:
       - run:
           name: Build Hello
           command: ./build-linux.sh
-      - run:
+      - &step_run_demo_unix
+        run:
           name: Run Hello
-          command: ./hello
+          command: |
+            ./hello | tee output.txt
+            grep "is true for this user" output.txt || (echo "Flag did not evaluate to expected true value" && exit 1)
 
   build-test-osx:
     macos:
@@ -63,9 +66,7 @@ jobs:
       - run:
           name: Build Hello
           command: ./build-mac.command
-      - run:
-          name: Run Hello
-          command: ./hello
+      - *step_run_demo_unix
 
   build-test-windows:
     executor:
@@ -80,9 +81,9 @@ jobs:
           name: Insert mobile and flag key into demo code
           command: |
             (get-content -path hello.cpp) `
-              -replace "#define MOBILE_KEY `"`"","#define MOBILE_KEY `"${env:LD_HELLO_WORLD_MOBILE_KEY}`"" `
+              -replace "#define MOBILE_KEY `"YOUR_MOBILE_KEY`"","#define MOBILE_KEY `"${env:LD_HELLO_WORLD_MOBILE_KEY}`"" `
               -replace "#define FEATURE_KEY `"YOUR_FEATURE_KEY`"","#define FEATURE_KEY `"${env:LD_HELLO_WORLD_FLAG_KEY_WITH_TRUE_VALUE}`"" `
-              | set-content -path hello.c
+              | set-content -path hello.cpp
       - run:
           name: Build Hello
           command: |
@@ -107,4 +108,10 @@ jobs:
               .\build-windows.ps1
       - run:
           name: Run Hello
-          command: .\hello
+          command: |
+            .\hello | tee-object -variable output
+            if ( "$output" -notlike "*is true for this user*" )
+            {
+              write-output "Flag did not evaluate to expected true value"
+              exit 1
+            }

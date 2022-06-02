@@ -1,10 +1,10 @@
 #include <cstring>
 #include <launchdarkly/api.hpp>
 
-const char *username = "jeff@example.com";
-
-// update me to your own keys
+// Set MOBILE_KEY to your LaunchDarkly mobile key.
 #define MOBILE_KEY "YOUR_MOBILE_KEY"
+
+// Set FEATURE_KEY to the feature flag you want to evaluate.
 #define FEATURE_KEY "YOUR_FEATURE_KEY"
 
 int main() {
@@ -20,7 +20,8 @@ int main() {
 
     // Set up the user properties. This user should appear on your LaunchDarkly users dashboard
     // soon after you run the demo.
-    auto *user = LDUserNew(username);
+    auto *user = LDUserNew("example-user-key");
+    LDUserSetName(user, "Sandy");
 
     // wait up to 3 seconds to connect
     auto *client = LDClientCPP::Init(config, user, 3000);

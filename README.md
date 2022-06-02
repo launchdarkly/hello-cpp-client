@@ -13,4 +13,4 @@ const char *feature_key = "YOUR_FEATURE_KEY";
 3. Build for your platform with `build-linux.sh`, `build-mac.command`, or `build-windows.ps1`.
 4. On the command line, run `./hello`.
 
-You should see the message `"Feature flag '<flag key>' is <true/false> for this user"`.
+You should receive the message `"Feature flag '<flag key>' is <true/false> for this user"`.

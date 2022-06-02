@@ -1,3 +1,4 @@
+#include <string.h>
 #include <launchdarkly/api.hpp>
 
 // Set mobile_key to your LaunchDarkly mobile key.
@@ -7,7 +8,7 @@ const char *mobile_key = "";
 const char *feature_key = "my-boolean-flag";
 
 int main() {
-    if (mobile_key && !mobile_key[0]) {
+    if (strlen(mobile_key) == 0) {
       printf("*** Please edit hello.cpp to set mobile_key to your LaunchDarkly mobile key first\n\n");
       return 1;
     }

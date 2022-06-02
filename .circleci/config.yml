@@ -7,9 +7,13 @@ workflows:
   version: 2
   build_all:
     jobs:
-      - build-test-linux
-      - build-test-osx
-      - build-test-windows
+      - build-test-linux:
+          context: hello-world-demos
+      - build-test-osx:
+          context: hello-world-demos
+      - build-test-windows:
+          context: hello-world-demos
+
   test-daily:
     triggers:
     - schedule:
@@ -34,12 +38,21 @@ jobs:
       - run:
           name: Fetch SDK
           command: ./fetch-linux.sh
+      - &step_inject_sdk_and_flag_key
+        run:
+          name: Insert mobile and flag key into demo code
+          command: |
+            sed -i.bak "s/#define MOBILE_KEY *\".*\"/#define MOBILE_KEY \"${LD_HELLO_WORLD_MOBILE_KEY}\"/" hello.cpp
+            sed -i.bak "s/#define FEATURE_KEY *\".*\"/#define FEATURE_KEY \"${LD_HELLO_WORLD_FLAG_KEY_WITH_TRUE_VALUE}\"/" hello.cpp
       - run:
           name: Build Hello
           command: ./build-linux.sh
-      - run:
+      - &step_run_demo_unix
+        run:
           name: Run Hello
-          command: ./hello
+          command: |
+            ./hello | tee output.txt
+            grep "is true for this user" output.txt || (echo "Flag did not evaluate to expected true value" && exit 1)
 
   build-test-osx:
     macos:
@@ -49,12 +62,11 @@ jobs:
       - run:
           name: Fetch SDK
           command: ./fetch-mac.command
+      - *step_inject_sdk_and_flag_key
       - run:
           name: Build Hello
           command: ./build-mac.command
-      - run:
-          name: Run Hello
-          command: ./hello
+      - *step_run_demo_unix
 
   build-test-windows:
     executor:
@@ -65,6 +77,13 @@ jobs:
       - run:
           name: Fetch SDK
           command: .\fetch-windows.ps1
+      - run:
+          name: Insert mobile and flag key into demo code
+          command: |
+            (get-content -path hello.cpp) `
+              -replace "#define MOBILE_KEY `"`"","#define MOBILE_KEY `"${env:LD_HELLO_WORLD_MOBILE_KEY}`"" `
+              -replace "#define FEATURE_KEY `"YOUR_FEATURE_KEY`"","#define FEATURE_KEY `"${env:LD_HELLO_WORLD_FLAG_KEY_WITH_TRUE_VALUE}`"" `
+              | set-content -path hello.cpp
       - run:
           name: Build Hello
           command: |
@@ -89,4 +108,10 @@ jobs:
               .\build-windows.ps1
       - run:
           name: Run Hello
-          command: .\hello
+          command: |
+            .\hello | tee-object -variable output
+            if ( "$output" -notlike "*is true for this user*" )
+            {
+              write-output "Flag did not evaluate to expected true value"
+              exit 1
+            }

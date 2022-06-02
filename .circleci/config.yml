@@ -81,7 +81,7 @@ jobs:
           name: Insert mobile and flag key into demo code
           command: |
             (get-content -path hello.cpp) `
-              -replace "#define MOBILE_KEY `"YOUR_MOBILE_KEY`"","#define MOBILE_KEY `"${env:LD_HELLO_WORLD_MOBILE_KEY}`"" `
+              -replace "#define MOBILE_KEY `"`"","#define MOBILE_KEY `"${env:LD_HELLO_WORLD_MOBILE_KEY}`"" `
               -replace "#define FEATURE_KEY `"YOUR_FEATURE_KEY`"","#define FEATURE_KEY `"${env:LD_HELLO_WORLD_FLAG_KEY_WITH_TRUE_VALUE}`"" `
               | set-content -path hello.cpp
       - run:

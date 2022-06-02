@@ -2,7 +2,7 @@
 #include <launchdarkly/api.hpp>
 
 // Set MOBILE_KEY to your LaunchDarkly mobile key.
-#define MOBILE_KEY "YOUR_MOBILE_KEY"
+#define MOBILE_KEY ""
 
 // Set FEATURE_KEY to the feature flag you want to evaluate.
 #define FEATURE_KEY "YOUR_FEATURE_KEY"

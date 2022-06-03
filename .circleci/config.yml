@@ -22,9 +22,12 @@ workflows:
           branches:
             only: main
     jobs:
-      - build-test-linux
-      - build-test-osx
-      - build-test-windows
+      - build-test-linux:
+          context: hello-world-demos
+      - build-test-osx:
+          context: hello-world-demos
+      - build-test-windows:
+          context: hello-world-demos
 
 jobs:
   build-test-linux:
